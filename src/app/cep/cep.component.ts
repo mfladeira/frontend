@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { CepService } from '../services/cep.service';
 import { Cep } from '../models/cep';
 
@@ -10,10 +9,36 @@ import { Cep } from '../models/cep';
 })
 export class CepComponent {
   ceps: Cep[] = [];
+  cep: string = '';
+  showModal: boolean = false;
 
   constructor(private cepService: CepService) { }
 
-  async onSubmit(cepForm: NgForm) {
-    this.ceps = await this.cepService.getCep(cepForm.value.cep)
+  onShowModal() {
+    this.showModal = true;
+
+    setTimeout(() => {
+      this.showModal = false;
+    }, 3500);
+  }
+
+  async onSubmit() {
+    const cepsLength = this.cep.split(';').length;
+    const foundLength = this.cep.match(/\b[0-9]{8}\b/g)?.length;
+
+    if (cepsLength !== foundLength) {
+      this.onShowModal();
+      return;
+    }
+
+    const ceps = await this.cepService.getCep(this.cep);
+
+    ceps.forEach(cep => {
+      if ('erro' in cep) {
+        this.onShowModal();
+      }
+    })
+
+    this.ceps = ceps;
   }
 }
