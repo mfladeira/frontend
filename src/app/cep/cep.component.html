@@ -5,32 +5,48 @@
     </div>
   </div>
 
-  <div class="row justify-content-center pt-5">
-    <div class="col-12 col-lg-6 col-md-9">
-      <input
-        class="form-control form-control"
-        type="text"
-        placeholder="Digite cep(s) separados por vírgula..."
-      />
+  <form action="" #cepForm="ngForm" (ngSubmit)="onSubmit(cepForm)">
+    <div class="row justify-content-center pt-5">
+      <div class="col-12 col-lg-6 col-md-9">
+        <input
+          class="form-control form-control"
+          type="text"
+          placeholder="Digite cep(s) separados por ponto e vírgula..."
+          name="cep"
+          ngModel
+        />
+      </div>
     </div>
-  </div>
 
-  <div class="row pt-4">
-    <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mx-auto d-grid">
-      <button type="button" class="btn btn-primary">Buscar CEP</button>
+    <div class="row pt-4">
+      <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mx-auto d-grid">
+        <button type="submit" class="btn btn-primary">Buscar CEP</button>
+      </div>
     </div>
-  </div>
+  </form>
 
   <div class="row justify-content-left pt-4">
-    <div class="col-3 mb-3">
-      <div class="card" style="width: 18rem">
-        <h5 class="card-header">Cep: 55555555</h5>
-
-        <div class="card-body">
-          <p class="card-text">Logradouro: enderçeo</p>
-          <p class="card-text">Bairro: enderçeo</p>
-          <p class="card-text">Localidade: enderçeo</p>
-          <p class="card-text">UF: enderçeo</p>
+    <div
+      class="col-12 col-sm-12 col-md-6 col-lg-4 mb-3 mr-2"
+      *ngFor="let cep of ceps"
+    >
+      <div *ngIf="cep?.cep">
+        <div class="card">
+          <h5 class="card-header">Cep: {{ cep.cep }}</h5>
+          <div class="card-body">
+            <p class="card-text">
+              <strong>Logradouro:</strong> {{ cep.logradouro }}
+            </p>
+            <p class="card-text">
+              <strong>Complemento:</strong>
+              {{ cep.complemento.length === 0 && "--" }}
+            </p>
+            <p class="card-text"><strong>Bairro:</strong> {{ cep.bairro }}</p>
+            <p class="card-text">
+              <strong>Localidade:</strong> {{ cep.localidade }}
+            </p>
+            <p class="card-text"><strong>UF:</strong> {{ cep.uf }}</p>
+          </div>
         </div>
       </div>
     </div>

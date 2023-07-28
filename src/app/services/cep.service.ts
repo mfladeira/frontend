@@ -10,12 +10,12 @@ export class CepService {
 
   constructor(private httpClient: HttpClient) { }
 
-  async getCep(cep: string) {
-    const ceps = cep.split(',');
+  async getCep(cep: string): Promise<Cep[]> {
+    const ceps = cep.split(';');
 
     const cepsMapped = await Promise.all(ceps.map(async (cep) => {
       const response = await firstValueFrom(this.httpClient.get<Cep>(`https://viacep.com.br/ws/${cep.trim()}/json`));
-      return response ? response : null;
+      return response;
     }))
 
     return cepsMapped;
