@@ -1,0 +1,79 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12 g-0">
+      <h1 class="text-center bg-primary text-white p-4">Buscador de ceps</h1>
+    </div>
+  </div>
+
+  <form #cepForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="row justify-content-center pt-5">
+      <div class="col-12 col-lg-6 col-md-9">
+        <input
+          class="form-control"
+          type="text"
+          placeholder="Digite cep(s) separados por ponto e vírgula..."
+          name="cep"
+          [(ngModel)]="cep"
+          required
+        />
+        <div
+          *ngIf="cepForm.controls['cep']?.['invalid'] && (cepForm.controls['cep']?.['dirty'] || cepForm.controls['cep'].touched)"
+        >
+          <div
+            *ngIf="cepForm.controls['cep'].errors?.['required']"
+            class="text-danger mt-1"
+          >
+            Necessário inserir ao menos um CEP
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row pt-4">
+      <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mx-auto d-grid">
+        <button type="submit" class="btn btn-primary">Buscar CEP</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="row justify-content-left pt-4">
+    <div
+      class="col-12 col-sm-12 col-md-6 col-lg-4 mb-3 mr-2"
+      *ngFor="let cep of ceps"
+    >
+      <div *ngIf="cep?.cep">
+        <div class="card">
+          <h5 class="card-header">Cep: {{ cep.cep }}</h5>
+          <div class="card-body">
+            <p class="card-text">
+              <strong>Logradouro:</strong> {{ cep.logradouro }}
+            </p>
+            <p class="card-text">
+              <strong>Complemento:</strong>
+              {{ cep.complemento.length === 0 && "--" }}
+            </p>
+            <p class="card-text"><strong>Bairro:</strong> {{ cep.bairro }}</p>
+            <p class="card-text">
+              <strong>Localidade:</strong> {{ cep.localidade }}
+            </p>
+            <p class="card-text"><strong>UF:</strong> {{ cep.uf }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="toast"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  autohide="false"
+  style="position: absolute; right: 20px; bottom: 20px"
+  [style.display]="showModal ? 'block' : 'none'"
+>
+  <div class="toast-body text-white bg-danger">
+    Um ou mais cep incorreto, tente novamente !
+  </div>
+</div>
